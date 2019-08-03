@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} class HTML {% endblock %}
+
+{% block content %}
+    <body>
+    <h1>Lista osób w klasie</h1>
+        <h2>Klasa: {{ class_name}} </h2>
+        {% for student in students %}
+        <ul>
+            <li> {{ student }}</li>
+        </ul>
+        {% endfor %}
+    </body>
+{% endblock %}
+

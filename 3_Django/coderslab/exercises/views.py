@@ -39,7 +39,7 @@ class SchoolView(View):
 
 class SchoolClassView(View):
 
-    def get(self, request, school_class):
-        students = Student.objects.filter(school_class=school_class)
-        return render(request, "class.html", {"students": students,
-                                              "class_name": SCHOOL_CLASS[int(school_class)][1]})
+    def get(self, request, pk):
+        students = Student.objects.filter(school_class=pk)
+        return TemplateResponse(request, "class.html", {"students": students,
+                                              "class_name": SCHOOL_CLASS[int(pk)][1]})
