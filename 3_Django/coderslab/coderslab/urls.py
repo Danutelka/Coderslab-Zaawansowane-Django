@@ -18,13 +18,17 @@ from django.urls import path
 from django.urls import re_path
 from django.contrib import admin
 
-from exercises.views import SchoolView, SchoolClassView
+from exercises.views import SchoolView, SchoolClassView, StudentView, GradesView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', SchoolView.as_view(), name="index"),
     path('class/<int:pk>', SchoolClassView.as_view(), 
         name="school-class"),
+    path('student/<int:pk>', StudentView.as_view(),
+        name="student"),
+    path('student/<int:pk>/<int:pk2>', GradesView.as_view(),
+        name="grades"),
     # url(r'^admin/', admin.site.urls),
     # url(r'^$', SchoolView.as_view(), name="index"),
     # url(r'^class/(?P<school_class>(\d)+)', SchoolClassView.as_view(), 

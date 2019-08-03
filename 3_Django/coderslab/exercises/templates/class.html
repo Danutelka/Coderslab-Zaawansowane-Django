@@ -3,14 +3,12 @@
 {% block title %} class HTML {% endblock %}
 
 {% block content %}
-    <body>
     <h1>Lista osób w klasie</h1>
         <h2>Klasa: {{ class_name}} </h2>
-        {% for student in students %}
+        {% for s in students %}
         <ul>
-            <li> {{ student }}</li>
+            <li><a href="/student/{{ s.id }}"> {{ s }}</a></li>
         </ul>
         {% endfor %}
-    </body>
 {% endblock %}
 

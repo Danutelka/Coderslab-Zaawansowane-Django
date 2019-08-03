@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %} grades HTML {% endblock %}
+{% block content %}
+    Imię: {{ student.first_name }} <br>
+    Nazwisko: {{ student.last_name }} <br>
+    Klasa: {{student.school_class }} <br>
+    <strong>Przedmiot</strong>{{ subject.name }} <br>
+    <strong>Nauczyciel</strong> {{ subject.teacher_name }} </br>
+    <ul>
+    {% for g in grades %}
+        <li> {{ g.grade }}</li>
+    {% endfor %}
+    </ul>
+    <strong> Average: {{ average }} </strong>
+{% endblock %}
