@@ -80,12 +80,9 @@ DATABASES = {
     'default': {
         'HOST': '127.0.0.1',
         'NAME': 'python_module5',
-        'ENGINE': 'mysql.connector.django',
-        'USER': 'root',
+        'ENGINE': 'django.db.backends.postgresql',
+        'USER': 'postgres',
         'PASSWORD': 'coderslab',
-        'OPTIONS': {
-                    'autocommit': True,
-        },
     }
 }
 

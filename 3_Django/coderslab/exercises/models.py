@@ -50,8 +50,8 @@ class Student(models.Model):
 
 
 class StudentGrades(models.Model):
-    student = models.ForeignKey(Student)
-    school_subject = models.ForeignKey(SchoolSubject)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    school_subject = models.ForeignKey(SchoolSubject, on_delete=models.CASCADE)
     grade = models.FloatField(choices=GRADES)
 
 
