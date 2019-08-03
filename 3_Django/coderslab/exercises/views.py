@@ -1,10 +1,11 @@
 from django.http import HttpResponse
+from django.template.response import TemplateResponse
 from django.shortcuts import render
 from django.views import View
 from .models import SCHOOL_CLASS, Student
 
 # Create your views here.
-class SchoolView(View):
+class SchoolView2(View):
 
     def get(self, request):
         html = """<!doctype html>
@@ -25,6 +26,15 @@ class SchoolView(View):
             class_list.append("<li><a href='/class/{}'>{}</a></li>".format(school_class[0], school_class[1]))
         classes_part = "".join(class_list)
         return HttpResponse(html.format(classes_part))
+
+class SchoolView(View):
+    
+    def get(self, request):
+        ctx = {
+            "klasy": SCHOOL_CLASS # nie jest modelem jest krotką
+        }
+        return TemplateResponse(request, "school.html", ctx)
+
 
 
 class SchoolClassView(View):

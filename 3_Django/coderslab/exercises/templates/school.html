@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %} school HTML {% endblock %}
+{% block content %}
+    <h1>Szkoła podstawowa nr 1 im. Chucka Norrisa.</h1>
+        <h2>Klasy:</h2>
+        {% for id, klasa in klasy %}
+        <ul>
+            <li><a href='/class/{{ id }}'>{{ klasa }}></a></li>
+        </ul>
+        {% endfor %}
+{% endblock %}
