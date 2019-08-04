@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form>
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="zamów pizze">
+</form>
+{% endblock %}

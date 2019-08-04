@@ -1,0 +1,22 @@
+<!--
+{% extends 'base.html' %}
+​
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+    <input type="submit" value="szukaj">
+    </form>
+<script>
+</script>
+    {% if students %}
+            <ul>
+                {% for student in students %}
+                <li>{{ student }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+         <p>No data to display</p>
+        {% endif %}
+{% endblock %}
+-->

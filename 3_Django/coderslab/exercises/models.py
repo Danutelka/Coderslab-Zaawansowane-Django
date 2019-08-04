@@ -29,6 +29,11 @@ GRADES = (
     (6, "6")
 )
 
+PIZZA_SIZES = (
+    (1, "small"),
+    (2, "medium"),
+    (3, "large")
+)
 # Create your models here.
 class SchoolSubject(models.Model):
     name = models.CharField(max_length=64)
@@ -55,3 +60,11 @@ class StudentGrades(models.Model):
     grade = models.FloatField(choices=GRADES)
 
 
+class Toppings(models.Model):
+    name = models.CharField(max_length=32)
+    price = models.FloatField()
+
+    
+class Pizza(models.Model):
+    size = models.IntegerField(choices=PIZZA_SIZES)
+    toppings = models.ManyToManyField(Toppings)
