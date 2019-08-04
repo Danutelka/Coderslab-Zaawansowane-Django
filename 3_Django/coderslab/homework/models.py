@@ -18,5 +18,3 @@ class Product(models.Model):
     vat = models.IntegerField(choices=VAT)
     stock = models.IntegerField(default=0)
     categories = models.ManyToManyField(Category)
-
-
