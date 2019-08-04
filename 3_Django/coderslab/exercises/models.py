@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 SCHOOL_CLASS = (
@@ -35,9 +36,15 @@ PIZZA_SIZES = (
     (3, "large")
 )
 # Create your models here.
+
+def validate_teacher_name(value):
+    if len(value.split()) != 2:
+        raise ValidationError("nauczyciel powienien posiadac imie i nazwisko")
+
 class SchoolSubject(models.Model):
-    name = models.CharField(max_length=64)
-    teacher_name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, verbose_name="nazwa przedmiotu")
+    teacher_name = models.CharField(max_length=64, verbose_name="nazwa nauczyciela",
+    help_text="Nauczyciel powienien miec imie i nazwisko", validators=[validate_teacher_name])
 
 
 class Student(models.Model):
@@ -64,7 +71,15 @@ class Toppings(models.Model):
     name = models.CharField(max_length=32)
     price = models.FloatField()
 
+    def __str__(self):
+        return "{} ({} zł)" .format(self.name, self.price)
     
 class Pizza(models.Model):
     size = models.IntegerField(choices=PIZZA_SIZES)
     toppings = models.ManyToManyField(Toppings)
+
+class PresenceList(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    day = models.DateField()
+    present = models.BooleanField(default=False)
+

@@ -2,10 +2,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.shortcuts import render
 from django.views import View
+from django.views.generic.edit import FormView
+from .forms import SchoolSubjectModelForm
 from django.shortcuts import get_object_or_404
 from .models import SCHOOL_CLASS, Student, SchoolSubject, StudentGrades
-from .forms import StudentSearchForm, StudentSubjectGradeForm, ComposePizzaForm
-from .models import PIZZA_SIZES, Pizza, Toppings
+from .forms import StudentSearchForm, StudentSubjectGradeForm, ComposePizzaForm, StudentPresenceListForm, ErrorValidationForm, SchoolSubjectModelForm
+from .models import PIZZA_SIZES, Pizza, Toppings, PresenceList
 
 # Create your views here.
 class SchoolView(View):
@@ -108,3 +110,42 @@ class ComposePizzaView(View):
     def get(self, request):
         form = ComposePizzaForm()
         return render(request, 'compose_pizza.html', context={'form': form})
+
+# widgety zad 2 
+
+class PresenceListView(View):
+    def get(self, request, student_id, day):
+        student = Student.objects.get(id=student_id)
+        form = StudentPresenceListForm(initial= {
+            'day': day,
+            'student': student
+        })
+        return render(request, 'presence.html', context={'form': form})
+    
+    def post(self, request, student_id, day):
+        student = Student.objects.get(id=student_id)
+        form = StudentPresenceListForm(request.POST)
+        if form.is_valid():
+            day = form.cleaned_data['day']
+            student = form.cleaned_data['student']
+            present = form.cleaned_data['present']
+            PresenceList.objects.create(student=student, present=present, day=day)
+            return HttpResponse("day= {} student= {} present = {}" .format(day, student, present))
+        else:
+            return HttpResponse("{}" .format(str(form.errors)))
+
+class D2P3E1View(View):
+    def get(self, request):
+        form = ErrorValidationForm()
+        return render(request, 'd2_p3_e3.html', context={'form': form})
+
+    def post(self, request):
+        form = ErrorValidationForm(request.POST)
+        if form.is_valid():
+            return HttpResponse("wszystko ok")
+        else:
+            return render(request, "form_errors.html", context={'form': form})
+
+class SchoolSubjectFormView(FormView):
+    form_class = SchoolSubjectModelForm
+    template_name  'school_subject_form.html'

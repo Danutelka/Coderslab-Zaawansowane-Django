@@ -18,8 +18,8 @@ from django.urls import path
 from django.urls import re_path
 from django.contrib import admin
 
-from exercises.views import SchoolView, SchoolClassView, StudentView, GradesView
-from exercises.views import StudentSearchView, AddGradeView, ComposePizzaView
+from exercises.views import SchoolView, SchoolClassView, StudentView, GradesView, SchoolSubjectFormView
+from exercises.views import StudentSearchView, AddGradeView, ComposePizzaView, PresenceListView, D2P3E1View
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,6 +30,9 @@ urlpatterns = [
     path('student_search', StudentSearchView.as_view(), name="student_search"),
     path('add_grade', AddGradeView.as_view(), name="add_grade"),
     path('pizza', ComposePizzaView.as_view(), name="pizza"),
+    path('class_presence/<int:student_id>/<str:day>', PresenceListView.as_view(), name="presence-list"),
+    path('d2_p3_e3', D2P3E1View.as_view(), name="d2_p3_e3"),
+    path('dodaj_przedmiot', SchoolSubjectFormView.as_view, name="dodaj_przedmiot"),
     # url(r'^admin/', admin.site.urls),
     # url(r'^$', SchoolView.as_view(), name="index"),
     # url(r'^class/(?P<school_class>(\d)+)', SchoolClassView.as_view(), 
