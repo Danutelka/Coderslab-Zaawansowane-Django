@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if form %}
+        <ul>
+        {% for field in form %}
+            <li> {{ field.liczba }}: {{ field.errors }} </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock  %}

@@ -8,7 +8,8 @@ from .forms import SchoolSubjectModelForm, StudentAddForm, SetColorForm
 from django.shortcuts import get_object_or_404
 from .models import SCHOOL_CLASS, Student, SchoolSubject, StudentGrades, EXCHANGE
 from .forms import StudentSearchForm, StudentSubjectGradeForm, ComposePizzaForm, LoginForm
-from .forms import StudentPresenceListForm, ErrorValidationForm, SchoolSubjectModelForm, ExchangeForm
+from .forms import StudentPresenceListForm, ErrorValidationForm, SchoolSubjectModelForm
+from .forms import ExchangeForm, Error2ValidationForm, Error3ValidationForm
 from .models import PIZZA_SIZES, Pizza, Toppings, PresenceList
 
 # Create your views here.
@@ -34,6 +35,10 @@ class StudentView(View):
             "school_class" : SCHOOL_CLASS[student.school_class][1]
         }
         return TemplateResponse(request, "student.html", crx)
+
+class SchoolSubjectFormView(FormView):
+    form_class = SchoolSubjectModelForm
+    # template_name  'school_subject_form.html'
 
 class GradesView(View):
     def get(self, request, pk, pk2):
@@ -194,15 +199,16 @@ class LoginView(View):
         if form.is_valid():
             login = form.cleaned_data['login']
             password = form.cleaned_data['password']
-            if (login == "a") and (password == "1"):
+            if (login == "root") and (password == "very_secret"):
                 return HttpResponse("Miło Cię widzieć")
             else:
                 return HttpResponse("A sio, hakerze !!!")
 
+# dzien 2 /4 Obsługa błędów / zad 1 
 class D2P3E1View(View):
     def get(self, request):
         form = ErrorValidationForm()
-        return render(request, 'd2_p3_e3.html', context={'form': form})
+        return render(request, 'd2_p3_e1.html', context={'form': form})
 
     def post(self, request):
         form = ErrorValidationForm(request.POST)
@@ -211,6 +217,28 @@ class D2P3E1View(View):
         else:
             return render(request, "form_errors.html", context={'form': form})
 
-class SchoolSubjectFormView(FormView):
-    form_class = SchoolSubjectModelForm
-    # template_name  'school_subject_form.html'
+# dzien 2 /4 Obsługa błędów / zad 3
+class D2P3E3View(View):
+    def get(self, request):
+        form = Error2ValidationForm()
+        return TemplateResponse(request, 'd2_p3_e3.html', context={'form': form})
+
+    def post(self, request):
+        form = Error2ValidationForm(request.POST)
+        if form.is_valid():
+            return HttpResponse("Facet")
+        else:
+            # return HttpResponse("Babka")
+            return render(request, "form2_errors.html", context={'form': form})
+
+# dzien 2 /4 Obsługa błędów / zad 4
+class D2P3E4View(View):
+    def get(self, request):
+        form = Error3ValidationForm()
+        return TemplateResponse(request, 'd2_p3_e4.html', context={'form': form})
+    def post(self, request):
+        form = Error3ValidationForm(request.POST)
+        if form.is_valid():
+            return HttpResponse("OK")
+        else:
+            return render(request, "form3_errors.html", context={'form': form})

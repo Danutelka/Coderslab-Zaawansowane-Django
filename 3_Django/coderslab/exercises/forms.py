@@ -11,7 +11,7 @@ class StudentSearchForm(forms.Form):
 class StudentAddForm(forms.Form):
     first_name = forms.CharField(label="Wpisz imię:", max_length=20)
     last_name = forms.CharField(label="Wpisz nazwisko:", max_length=30)
-    # year_of birth = forms.IntegerField(label="Wpisz rok urodzenia:")
+    # year_of birth = forms.IntegerField(label="Wpisz rok urodzenia:", validatosr=[validate_year])
     school_class = forms.ChoiceField(choices=SCHOOL_CLASS)
 
 # dzien 2 / 2 formularze / zad 4
@@ -24,6 +24,11 @@ class StudentSubjectGradeForm(forms.Form):
     last_name = forms.ChoiceField(choices=((s.id, s.last_name) for s in Student.objects.all()))
     subject = forms.ChoiceField(choices=((s.id, s.name) for s in SchoolSubject.objects.all()))
     grade = forms.ChoiceField(choices=GRADES)
+
+class SchoolSubjectModelForm(forms.ModelForm):
+    class Meta:
+        model = SchoolSubject
+        fields = '__all__'
 
 # dzien 2 / 3 Widgety / zad 1
 class ComposePizzaForm(forms.Form):
@@ -44,8 +49,7 @@ class LoginForm(forms.Form):
     login = forms.CharField(max_length=10)
     password = forms.CharField(widget=forms.PasswordInput, max_length=10)
 
-# d2 -4 -zad 1 
-
+# dzien 2 /4 Obsługa błędów / zad 1 
 def validate_two_dots(value):
     if value.count('.') <2:
         raise ValidationError("za malo kropeczek")
@@ -58,8 +62,26 @@ class ErrorValidationForm(forms.Form):
     www = forms.CharField(validators= [validate_two_dots, URLValidator()])
     # www = forms.URLField() nie działa walidacja/inna walidacja
 
+# dzien 2 /4 Obsługa błędów / zad 2
+def validate_year(value):
+    if (value >= 2005) and (value <= 1999):
+        raise ValidationError("Zła data!")
 
-class SchoolSubjectModelForm(forms.ModelForm):
-    class Meta:
-        model = SchoolSubject
-        fields = '__all__'
+# dzien 2 /4 Obsługa błędów / zad 3
+def validate_imie(value):
+    if value[-1] == "a":
+        raise ValidationError("Kobieta")
+
+class Error2ValidationForm(forms.Form):
+    imie = forms.CharField(validators=[validate_imie], label="wpisz imię")
+
+# dzien 2 /4 Obsługa błędów / zad 4
+#def validate_liczba(value):
+    #if value != int:
+        #raise ValidationError("To nie jest liczba")
+def validate2_liczba(value):
+    if (value < 1) and (value > 100):
+        raise ValidationError("Wystrzelono poza zakres")
+
+class Error3ValidationForm(forms.Form):
+    liczba = forms.IntegerField(validators=[validate2_liczba], label="wpisz liczbę z zakresu 1-100")
