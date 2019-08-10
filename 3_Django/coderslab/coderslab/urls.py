@@ -18,8 +18,10 @@ from django.urls import path
 from django.urls import re_path
 from django.contrib import admin
 
-from exercises.views import SchoolView, SchoolClassView, StudentView, GradesView, SchoolSubjectFormView
-from exercises.views import StudentSearchView, AddGradeView, ComposePizzaView, PresenceListView, D2P3E1View
+from exercises.views import SchoolView, SchoolClassView, StudentView, GradesView
+from exercises.views import SchoolSubjectFormView, StudentAddView, LoginView
+from exercises.views import StudentSearchView, AddGradeView, ComposePizzaView
+from exercises.views import PresenceListView, SetColorView, D2P3E1View, ExchangeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,8 +31,12 @@ urlpatterns = [
     path('student/<int:pk>/<int:pk2>', GradesView.as_view(), name="grades"),
     path('student_search', StudentSearchView.as_view(), name="student_search"),
     path('add_grade', AddGradeView.as_view(), name="add_grade"),
+    path('add_student', StudentAddView.as_view(), name="add_student"),
     path('pizza', ComposePizzaView.as_view(), name="pizza"),
+    path('exchange', ExchangeView.as_view(), name="exchange"),
     path('class_presence/<int:student_id>/<str:day>', PresenceListView.as_view(), name="presence-list"),
+    path('login', LoginView.as_view(), name="login"),
+    path('set_color', SetColorView.as_view(), name="background_color"),
     path('d2_p3_e3', D2P3E1View.as_view(), name="d2_p3_e3"),
     path('dodaj_przedmiot', SchoolSubjectFormView.as_view, name="dodaj_przedmiot"),
     # url(r'^admin/', admin.site.urls),

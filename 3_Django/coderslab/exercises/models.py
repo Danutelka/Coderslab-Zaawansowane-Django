@@ -35,6 +35,19 @@ PIZZA_SIZES = (
     (2, "medium"),
     (3, "large")
 )
+
+EXCHANGE = (
+    (1, "PLNtoUSD"),
+    (2, "USDtoPLN")
+)
+
+BACKGROUND = (
+    (1, "black"),
+    (2, "white"),
+    (3, "red"),
+    (4, "yellow"),
+    (5, "blue")
+)
 # Create your models here.
 
 def validate_teacher_name(value):
@@ -50,6 +63,7 @@ class SchoolSubject(models.Model):
 class Student(models.Model):
     first_name = models.CharField(max_length=64)
     last_name =  models.CharField(max_length=64)
+    # year_of_birth = models.IntegerField(default=0)
     school_class = models.IntegerField(choices=SCHOOL_CLASS)
     grades = models.ManyToManyField(SchoolSubject, through="StudentGrades")
 

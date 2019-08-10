@@ -3,10 +3,12 @@ from django.template.response import TemplateResponse
 from django.shortcuts import render
 from django.views import View
 from django.views.generic.edit import FormView
-from .forms import SchoolSubjectModelForm
+from django.views.decorators.csrf import csrf_exempt
+from .forms import SchoolSubjectModelForm, StudentAddForm, SetColorForm
 from django.shortcuts import get_object_or_404
-from .models import SCHOOL_CLASS, Student, SchoolSubject, StudentGrades
-from .forms import StudentSearchForm, StudentSubjectGradeForm, ComposePizzaForm, StudentPresenceListForm, ErrorValidationForm, SchoolSubjectModelForm
+from .models import SCHOOL_CLASS, Student, SchoolSubject, StudentGrades, EXCHANGE
+from .forms import StudentSearchForm, StudentSubjectGradeForm, ComposePizzaForm, LoginForm
+from .forms import StudentPresenceListForm, ErrorValidationForm, SchoolSubjectModelForm, ExchangeForm
 from .models import PIZZA_SIZES, Pizza, Toppings, PresenceList
 
 # Create your views here.
@@ -16,6 +18,7 @@ class SchoolView(View):
             "klasy" : SCHOOL_CLASS
         }
         return TemplateResponse(request, "school.html", crx)
+
 class SchoolClassView(View):
     def get(self, request, pk):
         students = Student.objects.filter(school_class=pk)
@@ -31,6 +34,7 @@ class StudentView(View):
             "school_class" : SCHOOL_CLASS[student.school_class][1]
         }
         return TemplateResponse(request, "student.html", crx)
+
 class GradesView(View):
     def get(self, request, pk, pk2):
         student = get_object_or_404(Student, id=pk)
@@ -47,8 +51,7 @@ class GradesView(View):
         }
         return TemplateResponse (request, 'grades.html', crx)
 
-# dzien2/2/zad1
-
+# dzien2 / 2 Formularze / zad1
 class StudentSearchView2(View):
     def get(self, request):
         context = {
@@ -67,12 +70,11 @@ class StudentSearchView2(View):
             }
         return TemplateResponse(request, "student_search.html", context=context)
 
-
 class StudentSearchView(View):
     def get(self, request):
         context = {
             'form': StudentSearchForm()
-        }
+            }
         return TemplateResponse(request, "student_search.html", context=context)
     def post(self, request):
         form = StudentSearchForm(request.POST)
@@ -82,10 +84,45 @@ class StudentSearchView(View):
             context = {
                 'form': form,
                 'students': students,
-            }
+                }
             return TemplateResponse(request, "student_search.html", context=context)
 
-# zad 5
+# dzien 2 / 2 Formularze / zad2, zad3
+class StudentAddView(View):
+    def get (self, request):
+        form = StudentAddForm()
+        return TemplateResponse(request, "add_student.html", {'form': form})
+    def post (self, request):
+        form = StudentAddForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            #year_of_birth = form.cleaned_data['year_of_birth']
+            school_class = form.cleaned_data['school_class']
+            Student.objects.create(first_name=first_name, last_name=last_name, school_class=school_class)
+            return HttpResponse("Dodano")
+
+# dzien 2/ 2 formularze / zad 4
+class ExchangeView(View):
+    def get(self, reguest):
+        form = ExchangeForm()
+        return TemplateResponse(reguest, "exchange.html", {'form': form})
+    def post(self, request):
+        form = ExchangeForm(request.POST)
+        if form.is_valid():
+            currency1 = form.cleaned_data['currency1']
+            currency2 = form.cleaned_data['currency2']
+            conversion = form.cleaned_data['conversion']
+            if (conversion == 1):
+                wynik = (currency1) * 3.9
+                return wynik
+            else:
+                wynik = int(currency2) / 3.9
+                return wynik
+            return render(wynik)
+
+
+# dzien 2/ 2 formularze / zad 5
 class AddGradeView(View):
     def get(self, request):
         form = StudentSubjectGradeForm()
@@ -106,13 +143,13 @@ class AddGradeView(View):
                 <p>grade = {grade}</p>
             """)
 
+# dzien 2 / 3 Widgety / zad 1
 class ComposePizzaView(View):
     def get(self, request):
         form = ComposePizzaForm()
         return render(request, 'compose_pizza.html', context={'form': form})
 
-# widgety zad 2 
-
+# dzien 2 / 3 Widgety / zad 2
 class PresenceListView(View):
     def get(self, request, student_id, day):
         student = Student.objects.get(id=student_id)
@@ -134,6 +171,34 @@ class PresenceListView(View):
         else:
             return HttpResponse("{}" .format(str(form.errors)))
 
+# dzien 2 / 3 widgety / zad3
+class SetColorView(View):
+    def get (self, request):
+        context = {
+            'form': SetColorForm()
+            }
+        return TemplateResponse(request, "set_color.html", context=context)
+    # def post (self, request):
+        # form = SetColorForm(request.POST)
+        # if form.is_valid():
+
+# dzien 2 / 3 Widgety / zad4
+class LoginView(View):
+    def get(self, request):
+        context = {
+            'form': LoginForm()
+            }
+        return TemplateResponse(request, "login.html", context=context)
+    def post(self, request):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            login = form.cleaned_data['login']
+            password = form.cleaned_data['password']
+            if (login == "a") and (password == "1"):
+                return HttpResponse("Miło Cię widzieć")
+            else:
+                return HttpResponse("A sio, hakerze !!!")
+
 class D2P3E1View(View):
     def get(self, request):
         form = ErrorValidationForm()
@@ -148,4 +213,4 @@ class D2P3E1View(View):
 
 class SchoolSubjectFormView(FormView):
     form_class = SchoolSubjectModelForm
-    template_name  'school_subject_form.html'
+    # template_name  'school_subject_form.html'
