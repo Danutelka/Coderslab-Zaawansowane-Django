@@ -42,11 +42,11 @@ EXCHANGE = (
 )
 
 BACKGROUND = (
-    (1, "black"),
-    (2, "white"),
-    (3, "red"),
-    (4, "yellow"),
-    (5, "blue")
+    ("black", "black"),
+    ("white", "white"),
+    ("red", "red"),
+    ("yellow", "yellow"),
+    ("blue", "blue")
 )
 # Create your models here.
 
@@ -59,6 +59,8 @@ class SchoolSubject(models.Model):
     teacher_name = models.CharField(max_length=64, verbose_name="nazwa nauczyciela",
     help_text="Nauczyciel powienien miec imie i nazwisko", validators=[validate_teacher_name])
 
+    def __str__(self):
+        return "{}".format(self.teacher_name)
 
 class Student(models.Model):
     first_name = models.CharField(max_length=64)
@@ -80,7 +82,6 @@ class StudentGrades(models.Model):
     school_subject = models.ForeignKey(SchoolSubject, on_delete=models.CASCADE)
     grade = models.FloatField(choices=GRADES)
 
-
 class Toppings(models.Model):
     name = models.CharField(max_length=32)
     price = models.FloatField()
@@ -97,3 +98,19 @@ class PresenceList(models.Model):
     day = models.DateField()
     present = models.BooleanField(default=False)
 
+# dzien 2 / 5 ModelForm / zad 2
+class Message(models.Model):
+    subject = models.CharField(max_length=256)
+    content = models.TextField()
+    to = models.ForeignKey(SchoolSubject, on_delete=models.CASCADE)
+    od = models.OneToOneField(Student, on_delete=models.CASCADE, primary_key=True) #nie da sie uzyc nazwy from jak jest w zad
+    date_sent = models.DateTimeField(auto_now_add=True)
+
+# dzien 2 / 5 ModelForm / zad 3
+class StudentNotice(models.Model):
+    od = models.ForeignKey(SchoolSubject, on_delete=models.CASCADE)
+    to = models.ForeignKey(Student, on_delete=models.CASCADE)
+    content = models.TextField()
+
+    def __str__(self):
+        return "{}".format(self.content)

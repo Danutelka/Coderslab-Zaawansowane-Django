@@ -22,7 +22,8 @@ from exercises.views import SchoolView, SchoolClassView, StudentView, GradesView
 from exercises.views import SchoolSubjectFormView, StudentAddView, LoginView
 from exercises.views import StudentSearchView, AddGradeView, ComposePizzaView
 from exercises.views import PresenceListView, SetColorView, ExchangeView
-from exercises.views import D2P3E1View, D2P3E3View, D2P3E4View
+from exercises.views import D2P3E1View, D2P3E3View, D2P3E4View, MessageCompose, \
+StudentNoticeView, NoticeCreate, NoticeDelete, NoticesView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -42,6 +43,11 @@ urlpatterns = [
     path('d2_p3_e3', D2P3E3View.as_view(), name="d2_p3_e3"),
     path('d2_p3_e4', D2P3E4View.as_view(), name="d2_p3_e4"),
     path('dodaj_przedmiot', SchoolSubjectFormView.as_view, name="dodaj_przedmiot"),
+    path('compose_message', MessageCompose.as_view(), name="compose_message"),
+    path('notices/<int:pk>', StudentNoticeView.as_view(), name="students_notes"),
+    path('notice_add', NoticeCreate.as_view(), name="add_notice"),
+    path('notice_del/<int:pk>', NoticeDelete.as_view(), name="delete_notice"),
+    path('notices_all', NoticesView.as_view(), name="notices")
     # url(r'^admin/', admin.site.urls),
     # url(r'^$', SchoolView.as_view(), name="index"),
     # url(r'^class/(?P<school_class>(\d)+)', SchoolClassView.as_view(), 

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <form action="{% url 'notice_del' notice.id %}" method="post">
+        {% csrf_token %}
+        content: {{ notice.content}}<br>
+        from : {{ notice.od }}<br>
+        to : {{ notice.to }}<br>
+    <input type="submit" value="Usuń naganę" />
+</form>
+{% endblock %}
+

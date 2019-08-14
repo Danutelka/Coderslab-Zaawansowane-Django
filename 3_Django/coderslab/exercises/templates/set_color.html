@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form method="POST">
+    <form method="POST" style="background-color: {{ color }}">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Zmień kolor tła">

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <form method="POST">
+       {% csrf_token %}
+    {{ student  }}  :
+    {% for x in notice %}
+        <p> {{  x }} </p>
+   {% endfor %}
+</form>
+{% endblock %}

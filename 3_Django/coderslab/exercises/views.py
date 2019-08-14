@@ -2,17 +2,19 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.shortcuts import render
 from django.views import View
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 from .forms import SchoolSubjectModelForm, StudentAddForm, SetColorForm
 from django.shortcuts import get_object_or_404
-from .models import SCHOOL_CLASS, Student, SchoolSubject, StudentGrades, EXCHANGE
-from .forms import StudentSearchForm, StudentSubjectGradeForm, ComposePizzaForm, LoginForm
-from .forms import StudentPresenceListForm, ErrorValidationForm, SchoolSubjectModelForm
+from .models import SCHOOL_CLASS, Student, SchoolSubject, StudentGrades, EXCHANGE, Message, StudentNotice
+from .forms import StudentSearchForm, StudentSubjectGradeForm, ComposePizzaForm, LoginForm,  \
+StudentPresenceListForm, ErrorValidationForm, SchoolSubjectModelForm, StudentNoticeForm
 from .forms import ExchangeForm, Error2ValidationForm, Error3ValidationForm
 from .models import PIZZA_SIZES, Pizza, Toppings, PresenceList
 
 # Create your views here.
+
+# dzien 1 / zad 2
 class SchoolView(View):
     def get(self, request):
         crx ={
@@ -20,11 +22,13 @@ class SchoolView(View):
         }
         return TemplateResponse(request, "school.html", crx)
 
+# dzien 1 / zad 3
 class SchoolClassView(View):
     def get(self, request, pk):
         students = Student.objects.filter(school_class=pk)
         return TemplateResponse(request, "class.html", {"students": students,
                                               "class_name": SCHOOL_CLASS[int(pk)][1]})
+# dzien 1 / zad 4 
 class StudentView(View):
     def get (self, request, pk):
         student = get_object_or_404(Student, id=pk)
@@ -36,10 +40,7 @@ class StudentView(View):
         }
         return TemplateResponse(request, "student.html", crx)
 
-class SchoolSubjectFormView(FormView):
-    form_class = SchoolSubjectModelForm
-    # template_name  'school_subject_form.html'
-
+# dzien 1 / zad 5
 class GradesView(View):
     def get(self, request, pk, pk2):
         student = get_object_or_404(Student, id=pk)
@@ -115,10 +116,9 @@ class ExchangeView(View):
     def post(self, request):
         form = ExchangeForm(request.POST)
         if form.is_valid():
-            currency1 = form.cleaned_data['currency1']
-            currency2 = form.cleaned_data['currency2']
+            currency = form.cleaned_data['currency']
             conversion = form.cleaned_data['conversion']
-            if (conversion == 1):
+            if int(conversion == 1):
                 wynik = (currency1) * 3.9
                 return wynik
             else:
@@ -179,13 +179,13 @@ class PresenceListView(View):
 # dzien 2 / 3 widgety / zad3
 class SetColorView(View):
     def get (self, request):
-        context = {
-            'form': SetColorForm()
-            }
-        return TemplateResponse(request, "set_color.html", context=context)
-    # def post (self, request):
-        # form = SetColorForm(request.POST)
-        # if form.is_valid():
+        form = SetColorForm()
+        return TemplateResponse(request, "set_color.html", {'form': form})
+    def post (self, request):
+        form = SetColorForm(request.POST)
+        if form.is_valid():
+            color = form.cleaned_data['background_color']
+            return TemplateResponse(request, "set_color.html", {'form': form, 'background_color': color})
 
 # dzien 2 / 3 Widgety / zad4
 class LoginView(View):
@@ -242,3 +242,46 @@ class D2P3E4View(View):
             return HttpResponse("OK")
         else:
             return render(request, "form3_errors.html", context={'form': form})
+
+class SchoolSubjectFormView(FormView):
+    form_class = SchoolSubjectModelForm
+    # template_name  'school_subject_form.html'
+
+# dzien 2/ 5 ModelForm / zad 2
+class MessageCompose(CreateView):
+    model = Message
+    fields = '__all__'
+    success_url = "compose_message"
+    #form_class = MessageForm
+    #template_name = 'message.html'
+    #success_url = 'compose_message'
+   
+# dzien 2 / 5 ModelForm / zad 3
+class StudentNoticeView(View):
+    def get(self, request, pk):
+        student = Student.objects.get(id=pk)
+        notice = StudentNotice.objects.filter(to=student)
+        return render(request, 'notice.html', context={'student': student, 'notice': notice, })
+
+# dzien 2 / 5 ModelForm / zad 4
+class NoticeCreate(CreateView):
+    model = StudentNotice
+    fields = '__all__'
+    success_url = "notice_add"
+
+class NoticeDelete(DeleteView):
+    model = StudentNotice
+    success_url = 'notices_all'
+    #def post(self, request, pk):
+     #   x = Notice.objects.filter(id=pk)
+      #  return render(request, 'exercises/notice_confirm_delete.html', context={'x': x})
+
+class NoticesView(View):
+    def get (self, request):
+        notices = StudentNotice.objects.all()
+        crx = {
+            "od" : od, 
+            "to" : to,
+            "content" : content
+            }
+        return TemplateResponse(request, "notices.html", crx)
