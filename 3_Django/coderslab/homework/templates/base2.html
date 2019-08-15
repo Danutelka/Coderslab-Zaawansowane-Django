@@ -1,0 +1,15 @@
+{% load static %}
+<!doctype html>
+
+<html>
+    <head><meta charset="utf-8">
+    {% block head_additional%}
+    {% endblock %}
+    {% include "header2.html" %}
+    </head>
+    <body>
+    {% block content %}
+    {% endblock %}
+    {% include "footer2.html" %}
+    </body>
+</html>

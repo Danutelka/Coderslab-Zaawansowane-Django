@@ -1,0 +1,11 @@
+{% extends "base2.html" %}
+
+{% block title %}Produkt{% endblock %}
+
+{% block content %}
+
+<body>
+        Nazwa produktu:  {{ prod.name }} <br> Opis: {{ prod.description }} <br>
+        Cena: {{ prod.price }} <br> VAT: {{ prod.vat }} <br> Ilość w magazynie: {{ prod.stock }}<br>
+</body>
+{% endblock %}

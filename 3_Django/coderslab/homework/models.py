@@ -11,6 +11,9 @@ class Category(models.Model):
     category_name = models.CharField(max_length=64)
     slug = models.SlugField(max_length=64, unique=True)
 
+    def __str__(self):
+        return " {} ".format(self.name)
+
 class Product(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField()
@@ -18,3 +21,6 @@ class Product(models.Model):
     vat = models.IntegerField(choices=VAT)
     stock = models.IntegerField(default=0)
     categories = models.ManyToManyField(Category)
+
+    def __str__(self):
+        return "{} {}".format(self.name, self.price)

@@ -1,0 +1,12 @@
+{% extends "base2.html" %}
+
+{% block title %}Kategorie{% endblock %}
+
+{% block content %}
+
+<body>
+    {% for z in b %}
+        Nazwa produktu: {{ z.name }} Cena: {{ z.price }} <br>
+    {% endfor %}
+</body>
+{% endblock %}

@@ -24,6 +24,7 @@ from exercises.views import StudentSearchView, AddGradeView, ComposePizzaView
 from exercises.views import PresenceListView, SetColorView, ExchangeView
 from exercises.views import D2P3E1View, D2P3E3View, D2P3E4View, MessageCompose, \
 StudentNoticeView, NoticeCreate, NoticeDelete, NoticesView
+from homework.views import CategoriesView, CategorySlugView, ProductView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -47,7 +48,12 @@ urlpatterns = [
     path('notices/<int:pk>', StudentNoticeView.as_view(), name="students_notes"),
     path('notice_add', NoticeCreate.as_view(), name="add_notice"),
     path('notice_del/<int:pk>', NoticeDelete.as_view(), name="delete_notice"),
-    path('notices_all', NoticesView.as_view(), name="notices")
+    path('notices_all', NoticesView.as_view(), name="notices"),
+    # homework
+    path('categories', CategoriesView.as_view(), name="categories_by_name"),
+    path('category/<str:x>', CategorySlugView.as_view(), name="category-slug"),
+    path('product/<int:id>', ProductView.as_view(), name="product_info")
+
     # url(r'^admin/', admin.site.urls),
     # url(r'^$', SchoolView.as_view(), name="index"),
     # url(r'^class/(?P<school_class>(\d)+)', SchoolClassView.as_view(), 
