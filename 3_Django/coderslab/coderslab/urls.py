@@ -24,7 +24,8 @@ from exercises.views import StudentSearchView, AddGradeView, ComposePizzaView
 from exercises.views import PresenceListView, SetColorView, ExchangeView
 from exercises.views import D2P3E1View, D2P3E3View, D2P3E4View, MessageCompose, \
 StudentNoticeView, NoticeCreate, NoticeDelete, NoticesView
-from homework.views import CategoriesView, CategorySlugView, ProductView
+from homework.views import CategoriesView, ProductsView, CategorySlugView, ProductView, \
+AddCategoryView, EditCategoryView, EditProductView, ProductCreate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -51,8 +52,13 @@ urlpatterns = [
     path('notices_all', NoticesView.as_view(), name="notices"),
     # homework
     path('categories', CategoriesView.as_view(), name="categories_by_name"),
+    path('products', ProductsView.as_view(), name="products"),
     path('category/<str:x>', CategorySlugView.as_view(), name="category-slug"),
-    path('product/<int:id>', ProductView.as_view(), name="product_info")
+    path('product/<int:pk>', ProductView.as_view(), name="product_info"),
+    path('add_category', AddCategoryView.as_view(), name="add_category"),
+    path('edit_category/<str:s>', EditCategoryView.as_view(), name="edit_category"),
+    path('edit_product/<int:p>', EditProductView.as_view(), name="edit_product"),
+    path('add_product', ProductCreate.as_view(), name="add_product")
 
     # url(r'^admin/', admin.site.urls),
     # url(r'^$', SchoolView.as_view(), name="index"),

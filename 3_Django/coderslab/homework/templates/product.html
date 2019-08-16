@@ -3,9 +3,9 @@
 {% block title %}Produkt{% endblock %}
 
 {% block content %}
-
-<body>
-        Nazwa produktu:  {{ prod.name }} <br> Opis: {{ prod.description }} <br>
-        Cena: {{ prod.price }} <br> VAT: {{ prod.vat }} <br> Ilość w magazynie: {{ prod.stock }}<br>
-</body>
+    <h1> Nazwa produktu:  {{ prod.name }} </h1><br> 
+    <h2> Opis: {{ prod.description }} </h2><br>
+    <h3> Cena: {{ prod.price }} </h3> <br> 
+    <h4> VAT: {{ prod.vat }} </h4> <br> 
+    <h5> Ilość w magazynie: {{ prod.stock }} </h5> <br>
 {% endblock %}

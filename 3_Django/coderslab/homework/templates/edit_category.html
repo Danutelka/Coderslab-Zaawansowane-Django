@@ -1,0 +1,10 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        {{ sl.slug }}
+        <input type="submit" value="zapisz zmiany">
+    </form>
+{% endblock %}

@@ -12,7 +12,7 @@ class Category(models.Model):
     slug = models.SlugField(max_length=64, unique=True)
 
     def __str__(self):
-        return " {} ".format(self.name)
+        return "{}".format(self.category_name)
 
 class Product(models.Model):
     name = models.CharField(max_length=128)

@@ -1,0 +1,15 @@
+{% extends "base2.html" %}
+
+{% block title %}products HTML{% endblock %}
+
+{% block content %}
+<body>
+    <h1>Produkty: </h1>
+        {% csrf_token %}
+        {% for x in pr %}
+        <ul> 
+            <li> {{ x.name }} <a href="http://127.0.0.1:8000/edit_product/{{ x.id }}"> edytuj</a></li>
+        </ul>
+        {% endfor %}
+    <a href="http://127.0.0.1:8000/add_product"> Dodaj produkt</a>
+{% endblock %}

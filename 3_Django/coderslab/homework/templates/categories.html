@@ -8,8 +8,9 @@
     <h1>Kategorie alfabetycznie: </h1>
     {% for y in kat %}
     <ul>
-        <li> <a href=""> {{ y.category_name }}  </a> </li>
+        <li> {{ y.category_name }} <a href="http://127.0.0.1:8000/edit_category/{{y.slug}}"> edytuj </a> </li>
     </ul>
     {% endfor %}
+    <a href="http://127.0.0.1:8000/add_category"> Dodaj kategorię</a>
 </body>
 {% endblock %}
