@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 from .models import Category, Product,VAT
-from .forms import AddCategoryForm, EditCategoryForm, EditProductForm
+from .forms import AddCategoryForm, EditCategoryForm, EditProductForm, SearchForm
 
 # Create your views here.
 # dzien 1 zad 2
@@ -86,3 +86,21 @@ class ProductCreate(CreateView):
     model = Product
     fields = '__all__'
     success_url = "products"
+
+#dzien 2 / zad 7*
+class SearchView(View):
+    def get(self, request):
+        form = SearchForm()
+        return TemplateResponse(request, 'search.html', context={'form': form})
+    def post(self, request):
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            product = Product.objects.filter(name__icontains=name)
+            category = Category.objects.filter(category_name__icontains=name)
+            context = {
+                "form": form,
+                "product": product,
+                "category": category
+            }
+        return TemplateResponse(request, "search.html", context=context)

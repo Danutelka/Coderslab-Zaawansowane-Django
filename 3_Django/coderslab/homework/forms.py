@@ -20,3 +20,7 @@ class EditProductForm(forms.Form):
     stock = forms.IntegerField(label="Edytuj ilosć w magazynie:")
     categories = forms.ModelMultipleChoiceField(queryset=Category.objects.all())
 
+# dzien 2 / zad 7*
+class SearchForm(forms.Form):
+    name = forms.CharField(label="wyszukaj")
+
