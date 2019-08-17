@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'exercises',
     'homework',
+    'dzien3',
 
 ]
+
+# LOGIN_URL ='/user_login/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

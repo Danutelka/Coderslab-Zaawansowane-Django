@@ -1,0 +1,14 @@
+{% extends 'dzien3/base.html' %}
+
+{% block content %}
+    {% if error %}
+        {% for er in error %}
+        <p style="color: red"></p>
+        {% endfor %}
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Dodaj użytkownika</button>
+    </form>
+{% endblock %}

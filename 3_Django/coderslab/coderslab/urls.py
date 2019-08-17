@@ -26,6 +26,7 @@ from exercises.views import D2P3E1View, D2P3E3View, D2P3E4View, MessageCompose, 
 StudentNoticeView, NoticeCreate, NoticeDelete, NoticesView
 from homework.views import CategoriesView, ProductsView, CategorySlugView, ProductView, \
 AddCategoryView, EditCategoryView, EditProductView, ProductCreate, SearchView
+from dzien3.views import UserListView, LoginView, user_logout, AddUserView, ResetPasswordView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -50,6 +51,12 @@ urlpatterns = [
     path('notice_add', NoticeCreate.as_view(), name="add_notice"),
     path('notice_del/<int:pk>', NoticeDelete.as_view(), name="delete_notice"),
     path('notices_all', NoticesView.as_view(), name="notices"),
+    # dzien 3
+    path('list_users/', UserListView.as_view(), name="user-list"),
+    path('login', LoginView.as_view(), name="login"),
+    path('logout', user_logout, name="userlogout"),
+    path('add_user', AddUserView.as_view(), name="add-user"),
+    path('reset_password/<int:p>', ResetPasswordView.as_view(), name="reset-password"),
     # homework
     path('categories', CategoriesView.as_view(), name="categories_by_name"),
     path('products', ProductsView.as_view(), name="products"),
