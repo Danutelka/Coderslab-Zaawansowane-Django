@@ -11,6 +11,15 @@
     {% include "header.html" %}
     {% block content %}
     {% endblock %}
+    <footer>
     {% include "footer.html" %}
+    {% if request.user.is_authenticated %}
+        <P> username: {{ request.user.username }} </p>
+        <p><a href ="logout"> Wyloguj</a><p>
+    {% else %}
+        <p>Użytkownik niezalogowany </p>
+        <p><a href="{% url 'login' %}">Zaloguj się</a><p>
+    {% endif %}
+    </footer>
     </body>
 </html>

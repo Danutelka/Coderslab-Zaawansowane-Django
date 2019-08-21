@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.views import View
@@ -6,7 +6,15 @@ from django.shortcuts import get_object_or_404
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 from .models import Category, Product,VAT
-from .forms import AddCategoryForm, EditCategoryForm, EditProductForm, SearchForm
+from .forms import AddCategoryForm, EditCategoryForm, EditProductForm, SearchForm, LoginForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.conf import settings
+import django.contrib.auth.decorators
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 # Create your views here.
 # dzien 1 zad 2
@@ -104,3 +112,24 @@ class SearchView(View):
                 "category": category
             }
         return TemplateResponse(request, "search.html", context=context)
+
+#dzien 3 / zad 8
+class Login2View(View):
+    def get(self, request):
+        form = LoginForm()
+        return render(request, 'dzien3/login.html', context={'form':form})
+    def post(self, request):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username, password = form.cleaned_data.values()
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect("products")
+            else:
+                return HttpResponse('ups niepoprawne logowanie')
+        return render(request, 'login2.html', context={'form':form})
+
+def user_logout(request):
+    logout(request)
+    return redirect('/')

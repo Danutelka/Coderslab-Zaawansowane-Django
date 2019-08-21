@@ -11,7 +11,14 @@ from .forms import StudentSearchForm, StudentSubjectGradeForm, ComposePizzaForm,
 StudentPresenceListForm, ErrorValidationForm, SchoolSubjectModelForm, StudentNoticeForm
 from .forms import ExchangeForm, Error2ValidationForm, Error3ValidationForm
 from .models import PIZZA_SIZES, Pizza, Toppings, PresenceList
-
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.conf import settings
+import django.contrib.auth.decorators
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.mixins import PermissionRequiredMixin
 # Create your views here.
 
 # dzien 1 / zad 2
@@ -264,12 +271,14 @@ class StudentNoticeView(View):
         return render(request, 'notice.html', context={'student': student, 'notice': notice, })
 
 # dzien 2 / 5 ModelForm / zad 4
-class NoticeCreate(CreateView):
+class NoticeCreate(PermissionRequiredMixin, CreateView):
+    permission_required = "auth.add_studentnotice"
     model = StudentNotice
     fields = '__all__'
     success_url = "notice_add"
 
-class NoticeDelete(DeleteView):
+class NoticeDelete(PermissionRequiredMixin, DeleteView):
+    permision_required = "auth.delete_studentnotice"
     model = StudentNotice
     success_url = 'notices_all'
     #def post(self, request, pk):

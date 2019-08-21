@@ -24,3 +24,8 @@ class EditProductForm(forms.Form):
 class SearchForm(forms.Form):
     name = forms.CharField(label="wyszukaj")
 
+# dzien 3 / zad 8
+class LoginForm(forms.Form): 
+    login = forms.CharField(max_length=10)
+    password = forms.CharField(widget=forms.PasswordInput, max_length=10)
+
