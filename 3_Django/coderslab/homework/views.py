@@ -40,7 +40,8 @@ class ProductView(View):
         return TemplateResponse(request, 'product.html', context)
 
 # dzien 2 zad 5
-class AddCategoryView(View):
+class AddCategoryView(PermissionRequiredMixin, View):
+    permission_required = "auth.add_category"
     def get(self, request):
         form = AddCategoryForm()
         return TemplateResponse(request, 'add_category.html', {'form':form})
@@ -52,7 +53,8 @@ class AddCategoryView(View):
             Category.objects.create(category_name=category_name, slug=slug)
             return HttpResponseRedirect("categories")
 
-class EditCategoryView(View):
+class EditCategoryView(PermissionRequiredMixin, View):
+    permission_required = "auth.change_category"
     def get(self, request, s):
         form = EditCategoryForm()
         sl = Category.objects.get(slug=s)
@@ -72,7 +74,8 @@ class ProductsView(View):
         pr = Product.objects.all().order_by('name')
         return TemplateResponse(request, "products.html", context={'pr': pr})
 
-class EditProductView(View):
+class EditProductView(PermissionRequiredMixin, View):
+    permission_required = "auth.change_product"
     def get(self, request, p):
         form = EditProductForm()
         pro = Product.objects.get(id=p)
@@ -90,7 +93,8 @@ class EditProductView(View):
             pro.save()
             return HttpResponseRedirect("products")
 
-class ProductCreate(CreateView):
+class ProductCreate(PermissionRequiredMixin, CreateView):
+    permission_required = "auth.add_product"
     model = Product
     fields = '__all__'
     success_url = "products"
@@ -114,7 +118,7 @@ class SearchView(View):
         return TemplateResponse(request, "search.html", context=context)
 
 #dzien 3 / zad 8
-class Login2View(View):
+class LoginView(View):
     def get(self, request):
         form = LoginForm()
         return render(request, 'dzien3/login.html', context={'form':form})

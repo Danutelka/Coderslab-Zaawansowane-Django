@@ -23,4 +23,4 @@ class Product(models.Model):
     categories = models.ManyToManyField(Category)
 
     def __str__(self):
-        return "{} {}".format(self.name, self.price)
+        return "{}".format(self.name)

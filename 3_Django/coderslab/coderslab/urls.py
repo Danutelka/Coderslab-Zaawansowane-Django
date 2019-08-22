@@ -25,7 +25,7 @@ from exercises.views import PresenceListView, SetColorView, ExchangeView
 from exercises.views import D2P3E1View, D2P3E3View, D2P3E4View, MessageCompose, \
 StudentNoticeView, NoticeCreate, NoticeDelete, NoticesView
 from homework.views import CategoriesView, ProductsView, CategorySlugView, ProductView, \
-AddCategoryView, EditCategoryView, EditProductView, ProductCreate, SearchView, Login2View
+AddCategoryView, EditCategoryView, EditProductView, ProductCreate, SearchView
 from dzien3.views import UserListView, LoginView, user_logout, AddUserView, ResetPasswordView
 
 urlpatterns = [
@@ -67,7 +67,7 @@ urlpatterns = [
     path('edit_product/<int:p>', EditProductView.as_view(), name="edit_product"),
     path('add_product', ProductCreate.as_view(), name="add_product"),
     path('search', SearchView.as_view(), name="search"),
-    path('login2', Login2View.as_view(), name="homework_login")
+    # path('login2', Login2View.as_view(), name="homework_login")
     # url(r'^admin/', admin.site.urls),
     # url(r'^$', SchoolView.as_view(), name="index"),
     # url(r'^class/(?P<school_class>(\d)+)', SchoolClassView.as_view(), 
